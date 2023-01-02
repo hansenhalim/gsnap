@@ -9,17 +9,13 @@
             ></iframe>
         </div>
 
-        <Link
-            :href="route('orders.create')"
-            class="border border-red-500 text-white"
-            >Create</Link
-        >
-
         <!-- Fullscreen Button -->
         <div
             class="fixed bottom-0 right-0 flex items-center space-x-6 text-white"
         >
-            <div class="animate-pulse text-2xl">Enter fullscreen to start</div>
+            <div class="animate-pulse text-2xl">
+                Enter fullscreen to continue
+            </div>
             <button
                 v-show="menuShown"
                 @click="openFullscreen"
