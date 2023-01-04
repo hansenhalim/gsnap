@@ -5,7 +5,6 @@
         <div class="flex min-h-screen items-center justify-center text-white">
             <Splide
                 :options="{
-                    type: 'loop',
                     width: '23rem',
                     fixedHeight: '50rem',
                     drag: false,
