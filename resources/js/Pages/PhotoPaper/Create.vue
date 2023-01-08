@@ -2,7 +2,9 @@
     <Head title="Create" />
 
     <FullscreenLayout>
-        <div class="flex min-h-screen items-center justify-center text-white">
+        <div
+            class="flex min-h-screen w-screen items-center justify-center text-white"
+        >
             <Splide
                 :options="{
                     width: '23rem',

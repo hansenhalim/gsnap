@@ -1,6 +1,8 @@
 <template>
     <FullscreenLayout>
-        <div class="flex min-h-screen items-center justify-center text-white">
+        <div
+            class="flex min-h-screen w-screen items-center justify-center text-white"
+        >
             <div class="flex items-center space-x-10">
                 <div class="w-40">
                     <div

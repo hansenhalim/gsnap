@@ -2,7 +2,9 @@
     <Head title="Show" />
 
     <FullscreenLayout>
-        <div class="flex min-h-screen items-center justify-center text-white">
+        <div
+            class="flex min-h-screen w-screen items-center justify-center text-white"
+        >
             <div class="flex flex-col items-center space-y-12">
                 <img class="w-48" :src="photoPaper.final_url" />
                 <div class="h-20 w-20">
@@ -24,6 +26,7 @@
 <script setup>
 import FullscreenLayout from "@/Layouts/FullscreenLayout.vue";
 import { PrinterIcon } from "@heroicons/vue/24/outline";
+import { Inertia } from "@inertiajs/inertia";
 import { Head } from "@inertiajs/inertia-vue3";
 import printJS from "print-js";
 
@@ -33,6 +36,6 @@ const props = defineProps({
 
 const sendToPrinter = () => {
     printJS(props.photoPaper.final_url, "image");
-    return false;
+    Inertia.visit(route("orders.create"));
 };
 </script>

@@ -12,11 +12,6 @@ use Inertia\Inertia;
 
 class PhotoController extends Controller
 {
-    public function index()
-    {
-        //
-    }
-
     public function create(Request $request)
     {
         $photoPaper = PhotoPaper::findOrFail($request->photo_paper_id);
@@ -61,16 +56,6 @@ class PhotoController extends Controller
         return response()->json($data, Response::HTTP_CREATED);
     }
 
-    public function show(Photo $photo)
-    {
-        //
-    }
-
-    public function edit(Photo $photo)
-    {
-        //
-    }
-
     public function update(Request $request, Photo $photo)
     {
         $filters = ['original', 'greyscale', 'sepia'];
@@ -100,14 +85,7 @@ class PhotoController extends Controller
     {
         if (App::isProduction()) abort(403);
 
-        $array = [
-            'photo_1_600_400.jpg',
-            'photo_2_600_400.jpg',
-            'photo_3_600_400.jpg',
-            'photo_4_600_400.jpg',
-        ];
-
-        $output = `cd ../storage/app/private && cp {$array[array_rand($array)]} capture_preview.jpg`;
+        $output = `cd ../storage/app/private && gphoto2 --capture-preview`;
 
         $photo = fopen(storage_path('app/private/capture_preview.jpg'), 'r');
 
