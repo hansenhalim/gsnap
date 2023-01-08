@@ -2,9 +2,7 @@
     <Head title="Checkout" />
 
     <FullscreenLayout>
-        <div class="flex min-h-screen items-center justify-center">
-            <button @click="pay" class="bg-white p-4 shadow">Pay</button>
-        </div>
+        <div class="flex min-h-screen items-center justify-center"></div>
     </FullscreenLayout>
 </template>
 
@@ -12,7 +10,7 @@
 import FullscreenLayout from "@/Layouts/FullscreenLayout.vue";
 import { Inertia } from "@inertiajs/inertia";
 import { Head } from "@inertiajs/inertia-vue3";
-import { onMounted } from "vue";
+import { onBeforeUnmount, onMounted } from "vue";
 
 const props = defineProps({
     clientKey: String,
@@ -21,25 +19,38 @@ const props = defineProps({
     order: Object,
 });
 
-onMounted(() => {
-    let snapScript = document.createElement("script");
-    snapScript.setAttribute("src", props.scriptSrc);
-    snapScript.setAttribute("data-client-key", props.clientKey);
-    document.body.appendChild(snapScript);
-});
-
-const pay = () => {
+const snapPay = () => {
     snap.pay(props.snapToken, {
         onSuccess: function (result) {
-            // console.log(result);
+            console.log("success");
+            console.log(result);
             Inertia.visit(route("orders.show", [props.order.id]));
         },
         onPending: function (result) {
-            // console.log(result);
+            console.log("pending");
+            console.log(result);
+            window.location.reload();
         },
         onError: function (result) {
-            // console.log(result);
+            console.log("error");
+            console.log(result);
+            window.location.reload();
+        },
+        onClose: function () {
+            console.log("onClose");
+            window.location.reload();
         },
     });
 };
+
+let snapScript = document.createElement("script");
+snapScript.setAttribute("src", props.scriptSrc);
+snapScript.setAttribute("data-client-key", props.clientKey);
+document.body.appendChild(snapScript);
+
+snapScript.addEventListener("load", snapPay);
+
+onMounted(() => snapPay);
+
+setInterval(() => window.location.reload(), 59 * 60 * 1000);
 </script>

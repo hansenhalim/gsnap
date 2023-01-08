@@ -27,11 +27,6 @@ class OrderController extends Controller
 
     public function create()
     {
-        return Inertia::render('Order/Create');
-    }
-
-    public function store(Request $request)
-    {
         $order = new Order;
         $order->gross_amount = 15000;
         $order->save();
@@ -43,6 +38,11 @@ class OrderController extends Controller
             'transaction_details' => [
                 'order_id' => $order->order_id,
                 'gross_amount' => $order->gross_amount,
+            ],
+            'enabled_payments' => ['shopeepay'],
+            'expiry' => [
+                'unit' => 'hour',
+                'duration' => 1
             ],
         ];
 
@@ -71,20 +71,5 @@ class OrderController extends Controller
         }
 
         return Redirect::route('photo-papers.create', ['order_id' => $order]);
-    }
-
-    public function edit(Order $order)
-    {
-        return Inertia::render('Order/Edit', ['order' => $order]);
-    }
-
-    public function update(Request $request, Order $order)
-    {
-        //
-    }
-
-    public function destroy(Order $order)
-    {
-        //
     }
 }

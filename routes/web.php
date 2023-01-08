@@ -9,11 +9,8 @@ use Illuminate\Support\Facades\Route;
 Route::redirect('/', '/orders');
 
 Route::middleware('auth')->group(function () {
-    Route::resources([
-        'orders' => OrderController::class,
-        'photo-papers' => PhotoPaperController::class,
-    ]);
-
+    Route::resource('orders', OrderController::class);
+    Route::resource('photo-papers', PhotoPaperController::class);
     Route::resource('photos', PhotoController::class)->only(['create', 'update', 'destroy']);
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

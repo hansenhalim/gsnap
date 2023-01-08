@@ -32,7 +32,6 @@ import { ref } from "vue";
 import { onMounted } from "vue";
 import { ArrowsPointingOutIcon } from "@heroicons/vue/24/outline";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import { Link } from "@inertiajs/inertia-vue3";
 
 const menuShown = ref(true);
 const openFullscreen = () => myScreen.requestFullscreen();
