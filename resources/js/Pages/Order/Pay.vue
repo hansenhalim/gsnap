@@ -10,7 +10,7 @@
 import FullscreenLayout from "@/Layouts/FullscreenLayout.vue";
 import { Inertia } from "@inertiajs/inertia";
 import { Head } from "@inertiajs/inertia-vue3";
-import { onBeforeUnmount, onMounted } from "vue";
+import { onUnmounted, onMounted } from "vue";
 
 const props = defineProps({
     clientKey: String,
@@ -52,5 +52,7 @@ snapScript.addEventListener("load", snapPay);
 
 onMounted(() => snapPay);
 
-setInterval(() => window.location.reload(), 59 * 60 * 1000);
+const timer = setInterval(() => window.location.reload(), 59 * 60 * 1000);
+
+onUnmounted(() => clearInterval(timer));
 </script>
