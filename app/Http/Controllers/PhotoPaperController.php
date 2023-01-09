@@ -64,6 +64,8 @@ class PhotoPaperController extends Controller
         foreach ($frame->data as $key => $data) {
             $filter = $photos[$key]->applied_filter;
             $source = $photos[$key]->getFirstMediaPath('image', $filter);
+            $source = Image::make($source);
+            $source->resize($data['width_px'], $data['height_px']);
             $img->insert($source, 'top-left', $data['x_offset'], $data['y_offset']);
         }
 
