@@ -85,11 +85,11 @@ class PhotoController extends Controller
     {
         if (App::isProduction()) abort(403);
 
-        $output = `cd ../storage/app/private && gphoto2 --capture-preview`;
+        `cd ../storage/app/private && gphoto2 --capture-image-and-download --filename capture_image.jpg`;
 
-        $photo = fopen(storage_path('app/private/capture_preview.jpg'), 'r');
+        $photo = fopen(storage_path('app/private/capture_image.jpg'), 'r');
 
-        $output = `cd ../storage/app/private && rm capture_preview.jpg`;
+        `cd ../storage/app/private && rm capture_image.jpg`;
 
         $response = Http::acceptJson()
             ->withToken($request->bearer_token)
