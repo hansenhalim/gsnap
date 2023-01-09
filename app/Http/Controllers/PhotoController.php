@@ -43,7 +43,7 @@ class PhotoController extends Controller
             ->addMediaFromRequest('image')
             ->toMediaCollection('image');
 
-        $photo->selected_url = $media->getUrl();
+        $photo->final_url = $media->getUrl();
         $photo->save();
 
         $request->user()->tokens()->delete();
@@ -69,7 +69,7 @@ class PhotoController extends Controller
         $newFilter = $filters[$newFilterIdx];
 
         $photo->applied_filter = $newFilter;
-        $photo->selected_url = $photo->getFirstMediaUrl('image', $newFilter);
+        $photo->final_url = $photo->getFirstMediaUrl('image', $newFilter);
         $photo->save();
 
         return back();

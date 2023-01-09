@@ -47,7 +47,7 @@
                             as="button"
                             :href="route('photos.update', photo)"
                         >
-                            <img :src="photo.selected_url" />
+                            <img :src="photo.final_url" />
                         </Link>
                         <Link
                             :href="route('photos.destroy', photo)"
