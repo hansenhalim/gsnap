@@ -14,6 +14,7 @@
                 </div>
 
                 <div class="flex w-28 flex-col items-center">
+                    <video id="webcam" muted autoplay></video>
                     <div v-if="captureLeft > 0">
                         <div>Capture left: {{ captureLeft }}</div>
                         <button
@@ -68,7 +69,7 @@ import FullscreenLayout from "@/Layouts/FullscreenLayout.vue";
 import { XCircleIcon } from "@heroicons/vue/24/outline";
 import { Inertia } from "@inertiajs/inertia";
 import { Link } from "@inertiajs/inertia-vue3";
-import { computed } from "vue";
+import { computed, onMounted } from "vue";
 
 const props = defineProps({
     photoPaper: Object,
@@ -99,4 +100,19 @@ const sendCaptureCommand = () => {
         .then(() => Inertia.reload())
         .catch((err) => console.error(err));
 };
+
+onMounted(() => {
+    //Selector for your <video> element
+    const video = document.getElementById("webcam");
+
+    //Core
+    window.navigator.mediaDevices
+        .getUserMedia({ video: true })
+        .then((stream) => {
+            video.srcObject = stream;
+            video.onloadedmetadata = (e) => {
+                video.play();
+            };
+        });
+});
 </script>

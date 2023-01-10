@@ -24,7 +24,7 @@ const snapPay = () => {
         onSuccess: function (result) {
             console.log("success");
             console.log(result);
-            Inertia.visit(route("orders.show", [props.order.id]));
+            Inertia.visit(route("orders.show", props.order.id));
         },
         onPending: function (result) {
             console.log("pending");
