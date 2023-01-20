@@ -38,7 +38,7 @@ class OrderController extends Controller
                 'order_id' => $order->order_id,
                 'gross_amount' => $order->gross_amount,
             ],
-            'enabled_payments' => ['shopeepay'],
+            'enabled_payments' => ['gopay'],
             'expiry' => [
                 'unit' => 'hour',
                 'duration' => 1
