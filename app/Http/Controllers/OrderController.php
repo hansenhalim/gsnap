@@ -27,7 +27,7 @@ class OrderController extends Controller
     public function create()
     {
         $order = new Order;
-        $order->gross_amount = 30000;
+        $order->gross_amount = 1;
         $order->save();
 
         $order->order_id = 'SB-GSNAP-' . $order->id . '-' . rand(0, 10000);
