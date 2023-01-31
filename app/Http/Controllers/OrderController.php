@@ -27,10 +27,11 @@ class OrderController extends Controller
     public function create()
     {
         $order = new Order;
-        $order->gross_amount = 1;
+        $order->gross_amount = config('midtrans.gross_amount');
         $order->save();
 
-        $order->order_id = 'SB-GSNAP-' . $order->id . '-' . rand(0, 10000);
+        $order->order_id = Config::$isProduction ? '' : 'SB-';
+        $order->order_id .= 'GSNAP-' . $order->id . '-' . rand(10000, 99999);
         $order->save();
 
         $params = [
@@ -38,7 +39,7 @@ class OrderController extends Controller
                 'order_id' => $order->order_id,
                 'gross_amount' => $order->gross_amount,
             ],
-            'enabled_payments' => ['gopay'],
+            'enabled_payments' => Config::$isProduction ? ['gopay'] : ['shopeepay'],
             'expiry' => [
                 'unit' => 'hour',
                 'duration' => 1
