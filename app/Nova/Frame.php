@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use Ebess\AdvancedNovaMediaLibrary\Fields\Files;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Code;
 use Laravel\Nova\Fields\ID;
@@ -43,6 +44,7 @@ class Frame extends Resource
     {
         return [
             ID::make()->sortable(),
+            Files::make('image/png', 'image'),
             Number::make('Slot Count'),
             Number::make('Width px'),
             Number::make('Height px'),

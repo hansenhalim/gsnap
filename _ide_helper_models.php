@@ -69,6 +69,8 @@ namespace App\Models{
  *
  * @property int $id
  * @property int $photo_paper_id
+ * @property string|null $final_url
+ * @property string $applied_filter
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection|\Spatie\MediaLibrary\MediaCollections\Models\Media[] $media
@@ -77,7 +79,9 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Photo newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Photo newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Photo query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Photo whereAppliedFilter($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Photo whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Photo whereFinalUrl($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Photo whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Photo wherePhotoPaperId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Photo whereUpdatedAt($value)
