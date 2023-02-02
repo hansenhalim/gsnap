@@ -46,7 +46,9 @@ class Order extends Resource
         return [
             ID::make()->sortable(),
             Text::make('Order ID')->sortable(),
-            Select::make('Status')->options(OrderStatus::cases())->filterable(),
+            Select::make('Status')
+                ->options(OrderStatus::cases())
+                ->filterable(),
             Currency::make('Gross Amount')->currency('IDR'),
         ];
     }
