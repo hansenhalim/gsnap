@@ -5,11 +5,6 @@
         >
             <div class="flex flex-col items-center">
                 <div class="flex space-x-4">
-                    <div class="flex-1">
-                        <div class="w-52 rounded-xl border px-4 py-2 text-lg">
-                            Tip: Click on image to change filter
-                        </div>
-                    </div>
                     <video class="flex-1" id="webcam" muted autoplay></video>
                     <div class="flex w-52 flex-1 flex-col space-y-4">
                         <div
