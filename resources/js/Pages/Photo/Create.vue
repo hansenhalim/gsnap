@@ -4,21 +4,15 @@
             class="flex min-h-screen w-screen items-center justify-center text-white"
         >
             <div class="flex flex-col items-center">
-                <div class="flex space-x-4">
-                    <video class="flex-1" id="webcam" muted autoplay></video>
-                    <div class="flex w-52 flex-1 flex-col space-y-4">
+                <div class="flex w-[1440px] space-x-4">
+                    <video id="webcam" class="w-1/2" muted autoplay />
+                    <div class="flex w-1/2 flex-col justify-center space-y-4">
                         <div
                             v-for="photo in photoPaper.photos"
                             :key="photo.id"
-                            class="flex w-56 space-x-2"
+                            class="flex space-x-2"
                         >
-                            <Link
-                                method="put"
-                                as="button"
-                                :href="route('photos.update', photo)"
-                            >
-                                <img :src="photo.final_url" />
-                            </Link>
+                            <img :src="photo.final_url" class="h-36 w-52" />
                             <Link
                                 :href="route('photos.destroy', photo)"
                                 method="delete"
@@ -27,6 +21,12 @@
                                 <XCircleIcon class="h-14 w-14"
                             /></Link>
                         </div>
+                        <div
+                            v-for="n in photoPaper.frame.slot_count -
+                            photoPaper.photos.length"
+                            :key="n"
+                            class="h-36 w-52 space-x-2 bg-gray-700"
+                        />
                     </div>
                 </div>
                 <div class="mt-16 grid h-12 grid-cols-3">
