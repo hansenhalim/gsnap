@@ -4,8 +4,8 @@
             class="flex min-h-screen w-screen items-center justify-center text-white"
         >
             <div class="flex flex-col items-center">
-                <div class="flex w-[1440px] space-x-4">
-                    <div class="relative w-1/2 border">
+                <div class="flex w-[1440px] items-center">
+                    <div class="relative w-1/2">
                         <video
                             id="webcam"
                             class="relative w-full"
@@ -20,7 +20,7 @@
                         </div>
                     </div>
                     <div
-                        class="flex w-1/2 flex-col justify-center space-y-4 border"
+                        class="flex w-1/2 flex-col justify-center space-y-4 p-4"
                     >
                         <div
                             v-for="photo in photoPaper.photos"
@@ -28,13 +28,9 @@
                             class="flex space-x-2"
                         >
                             <img :src="photo.final_url" class="h-36 w-52" />
-                            <Link
-                                :href="route('photos.destroy', photo)"
-                                method="delete"
-                                as="button"
-                            >
-                                <XCircleIcon class="h-14 w-14"
-                            /></Link>
+                            <button @click="destroyPhoto(photo)">
+                                <XCircleIcon class="h-14 w-14" />
+                            </button>
                         </div>
                         <div
                             v-for="n in photoPaper.frame.slot_count -
@@ -60,7 +56,7 @@
                         </button>
                     </div>
                     <Link
-                        v-if="!(captureLeft > 0)"
+                        v-if="!(captureQuota > 0)"
                         :href="route('photo-papers.update', photoPaper)"
                         method="put"
                         as="button"
@@ -98,50 +94,68 @@ const props = defineProps({
 const isTimerOn = ref(false);
 const countdown = ref(timerSeconds);
 
-const captureLeft = computed(
+const captureQuota = computed(
     () => props.photoPaper.frame.slot_count - props.photoPaper.photos.length
 );
 
 const captureEnabled = computed(
-    () => isTimerOn.value || captureLeft.value <= 0
+    () => isTimerOn.value || captureQuota.value <= 0
 );
+
+let countdownInterval = null;
+
+const resetTimer = () => {
+    //stop interval
+    clearInterval(countdownInterval);
+    // reset timer
+    countdown.value = timerSeconds;
+    isTimerOn.value = false;
+};
 
 const sendCaptureCommand = () => {
     // overlay video with timer
     isTimerOn.value = true;
 
-    const countdownInterval = setInterval(() => {
+    countdownInterval = setInterval(() => {
         // start reducing countdown
         countdown.value--;
 
-        // when countdown reaching 0
+        // when countdown reaching 0, reset the timer
         if (countdown.value <= 0) {
-            //stop interval
-            clearInterval(countdownInterval);
-            // reset timer
-            countdown.value = timerSeconds;
-            isTimerOn.value = false;
+            resetTimer();
+
+            const options = {
+                method: "POST",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    bearer_token: props.bearerToken,
+                    upload_url: props.uploadUrl,
+                    photo_paper_id: props.photoPaper.id,
+                }),
+            };
+
+            fetch(props.triggerUrl, options)
+                .then(() =>
+                    Inertia.reload({
+                        onSuccess: () => {
+                            //recapture if there still quota left
+                            if (captureQuota.value > 0) sendCaptureCommand();
+                        },
+                    })
+                )
+                .catch((err) => console.error(err));
         }
     }, 1000);
+};
 
-    const options = {
-        method: "POST",
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            bearer_token: props.bearerToken,
-            upload_url: props.uploadUrl,
-            photo_paper_id: props.photoPaper.id,
-        }),
-    };
-
-    setTimeout(() => {
-        fetch(props.triggerUrl, options)
-            .then(() => Inertia.reload())
-            .catch((err) => console.error(err));
-    }, timerSeconds * 1000);
+const destroyPhoto = (photo) => {
+    resetTimer();
+    Inertia.delete(route("photos.destroy", photo), {
+        onSuccess: sendCaptureCommand,
+    });
 };
 
 onMounted(() => {
