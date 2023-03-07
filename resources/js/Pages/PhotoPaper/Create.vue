@@ -104,6 +104,7 @@ const mainOptions = {
 
 const thumbsOptions = {
     gap: "1.5rem",
+    width: "100rem",
     fixedWidth: 300,
     fixedHeight: 450,
     isNavigation: true,
