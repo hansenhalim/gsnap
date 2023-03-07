@@ -6,7 +6,7 @@
             class="flex min-h-screen w-screen items-center justify-center text-white"
         >
             <div class="flex flex-col items-center space-y-12">
-                <img class="w-48" :src="photoPaper.final_url" />
+                <img class="h-[40rem]" :src="photoPaper.final_url" />
                 <div class="mt-16 grid h-12 grid-cols-3">
                     <button
                         onclick="window.history.back()"

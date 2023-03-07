@@ -56,7 +56,7 @@ class PhotoPaperController extends Controller
             ]);
         }
 
-        return Inertia::render('Photo/Edit', [
+        return Inertia::render('PhotoPaper/Edit', [
             'photoPaper' => $photoPaper,
             'filteredPhotos' => $filteredPhotos
         ]);
@@ -69,7 +69,7 @@ class PhotoPaperController extends Controller
 
         if ($photos->count() !== $frame->slot_count) abort(403);
 
-        $img = Image::canvas($frame->width_px, $frame->height_px);
+        $img = Image::canvas($frame->width_px * 2, $frame->height_px);
 
         foreach ($frame->data as $key => $data) {
             $filter = $request->filter;
@@ -77,9 +77,11 @@ class PhotoPaperController extends Controller
             $source = Image::make($source);
             $source->resize($data['width_px'], $data['height_px']);
             $img->insert($source, 'top-left', $data['x_offset'], $data['y_offset']);
+            $img->insert($source, 'top-left', $data['x_offset'] + $data['width_px'], $data['y_offset']);
         }
 
         $img->insert($frame->getFirstMediaPath('image'));
+        $img->insert($frame->getFirstMediaPath('image'), 'top-left', $frame->width_px);
 
         $pathToFile = 'output.jpg';
 
