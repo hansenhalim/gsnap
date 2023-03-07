@@ -47,7 +47,7 @@ class Order extends Resource
             ID::make()->sortable(),
             Text::make('Order ID')->sortable(),
             Select::make('Status')
-                ->options(OrderStatus::cases())
+                ->options(array_column(OrderStatus::cases(), 'name', 'value'))
                 ->filterable(),
             Currency::make('Gross Amount')->currency('IDR'),
         ];
