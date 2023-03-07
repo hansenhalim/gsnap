@@ -14,8 +14,8 @@
             >
                 <SplideSlide v-for="frame in frames" :key="frame.id">
                     <img
-                        :src="frame.media[0].original_url"
-                        :alt="frame.media[0].file_name"
+                        :src="frame.media[1].original_url"
+                        :alt="frame.media[1].file_name"
                     />
                 </SplideSlide>
             </Splide>
@@ -33,12 +33,12 @@
                         <SplideSlide v-for="frame in frames" :key="frame.id">
                             <img
                                 class="m-auto h-full"
-                                :src="frame.media[0].original_url"
-                                :alt="frame.media[0].file_name"
+                                :src="frame.media[1].original_url"
+                                :alt="frame.media[1].file_name"
                             />
                         </SplideSlide>
                     </Splide>
-                    <div class="flex w-full justify-between">
+                    <div class="flex w-full justify-evenly">
                         <div class="h-20 w-20">
                             <button
                                 @click="preview = false"
@@ -94,7 +94,7 @@ const thumbs = ref();
 
 const mainOptions = {
     type: "fade",
-    width: "15rem",
+    width: "30rem",
     fixedHeight: "45rem",
     drag: false,
     arrows: false,
@@ -104,7 +104,7 @@ const mainOptions = {
 
 const thumbsOptions = {
     gap: "1.5rem",
-    fixedWidth: 150,
+    fixedWidth: 300,
     fixedHeight: 450,
     isNavigation: true,
     arrows: false,

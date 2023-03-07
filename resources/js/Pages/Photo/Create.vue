@@ -4,8 +4,8 @@
             class="flex min-h-screen w-screen items-center justify-center text-white"
         >
             <div class="flex flex-col items-center">
-                <div class="flex w-[1440px] items-center">
-                    <div class="relative w-1/2">
+                <div class="flex w-[1600px] items-center space-x-6">
+                    <div class="relative w-1/2 border">
                         <video
                             id="webcam"
                             class="relative w-full"
@@ -19,25 +19,31 @@
                             <div class="text-9xl">{{ countdown }}</div>
                         </div>
                     </div>
-                    <div
-                        class="flex w-1/2 flex-col justify-center space-y-4 p-4"
-                    >
-                        <div
-                            v-for="photo in photoPaper.photos"
-                            :key="photo.id"
-                            class="flex space-x-2"
-                        >
-                            <img :src="photo.final_url" class="h-36 w-52" />
-                            <button @click="destroyPhoto(photo)">
-                                <XCircleIcon class="h-14 w-14" />
-                            </button>
+                    <div class="w-1/2">
+                        <div class="grid w-fit grid-flow-col grid-rows-4 gap-4">
+                            <div
+                                v-for="photo in photoPaper.photos"
+                                :key="photo.id"
+                                class="flex"
+                            >
+                                <img
+                                    :src="photo.final_url"
+                                    class="h-36 w-52 border"
+                                />
+                                <button @click="destroyPhoto(photo)">
+                                    <XCircleIcon class="h-14 w-14" />
+                                </button>
+                            </div>
+                            <div
+                                v-for="n in Math.max(
+                                    0,
+                                    photoPaper.frame.slot_count -
+                                        photoPaper.photos.length
+                                )"
+                                :key="n"
+                                class="h-36 w-52 bg-gray-700"
+                            />
                         </div>
-                        <div
-                            v-for="n in photoPaper.frame.slot_count -
-                            photoPaper.photos.length"
-                            :key="n"
-                            class="h-36 w-52 space-x-2 bg-gray-700"
-                        />
                     </div>
                 </div>
                 <div class="mt-16 grid h-12 grid-cols-3">
@@ -81,7 +87,7 @@ import { Inertia } from "@inertiajs/inertia";
 import { Link } from "@inertiajs/inertia-vue3";
 import { computed, onMounted, ref } from "vue";
 
-const timerSeconds = 5; //set this to desired value
+const timerSeconds = 3; //set this to desired delay time
 
 const props = defineProps({
     photoPaper: Object,

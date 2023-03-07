@@ -25,6 +25,13 @@ class Frame extends Model implements HasMedia
             ->acceptsFile(function (File $file) {
                 return $file->mimeType === 'image/png';
             });
+
+        $this
+            ->addMediaCollection('thumb')
+            ->singleFile()
+            ->acceptsFile(function (File $file) {
+                return $file->mimeType === 'image/jpeg';
+            });
     }
 
     public function photoPapers()

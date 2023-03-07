@@ -46,6 +46,8 @@ class Frame extends Resource
             ID::make()->sortable(),
             Images::make('image/png', 'image')
                 ->rules('required'),
+            Images::make('thumb/jpeg', 'thumb')
+                ->rules('required'),
             Number::make('Slot Count'),
             Number::make('Width px'),
             Number::make('Height px'),
