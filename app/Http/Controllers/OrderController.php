@@ -30,8 +30,13 @@ class OrderController extends Controller
         $order->gross_amount = config('midtrans.gross_amount');
         $order->save();
 
-        $order->order_id = Config::$isProduction ? '' : 'SB-';
-        $order->order_id .= 'GSNAP-' . $order->id . '-' . rand(10000, 99999);
+        $order->order_id = '';
+
+        if (!Config::$isProduction) $order->order_id .= 'SB-';
+
+        $order->order_id .= 'GSNAP-' . $order->id;
+        $order->order_id .= '-' . rand(10000, 99999);
+
         $order->save();
 
         $params = [
