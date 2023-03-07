@@ -57,8 +57,7 @@
                     </div>
                     <Link
                         v-if="!(captureQuota > 0)"
-                        :href="route('photo-papers.update', photoPaper)"
-                        method="put"
+                        :href="route('photo-papers.edit', photoPaper)"
                         as="button"
                         class="flex items-center rounded-full border py-2 px-4 text-xl hover:bg-white hover:text-black active:bg-white active:text-black"
                     >

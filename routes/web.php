@@ -11,7 +11,7 @@ Route::redirect('/', '/orders');
 Route::middleware('auth')->group(function () {
     Route::resource('orders', OrderController::class);
     Route::resource('photo-papers', PhotoPaperController::class);
-    Route::resource('photos', PhotoController::class)->only(['create', 'update', 'destroy']);
+    Route::resource('photos', PhotoController::class)->only(['create', 'edit', 'update', 'destroy']);
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

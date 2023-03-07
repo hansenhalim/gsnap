@@ -12,11 +12,6 @@ use Intervention\Image\Facades\Image;
 
 class PhotoPaperController extends Controller
 {
-    public function index()
-    {
-        //
-    }
-
     public function create(Request $request)
     {
         $order = Order::findOrFail($request->order_id);
@@ -49,7 +44,22 @@ class PhotoPaperController extends Controller
 
     public function edit(PhotoPaper $photoPaper)
     {
-        //
+        $filters = ['original', 'greyscale', 'sepia'];
+
+        $filteredPhotos = collect();
+
+        foreach ($filters as $filter) {
+            $filteredPhotos->push([
+                'filter' => $filter,
+                'original_url' => $photoPaper->photos()->first()->getFirstMediaUrl('image', $filter),
+                'file_name' => $photoPaper->photos()->first()->getFirstMediaPath('image', $filter)
+            ]);
+        }
+
+        return Inertia::render('Photo/Edit', [
+            'photoPaper' => $photoPaper,
+            'filteredPhotos' => $filteredPhotos
+        ]);
     }
 
     public function update(Request $request, PhotoPaper $photoPaper)
@@ -62,7 +72,7 @@ class PhotoPaperController extends Controller
         $img = Image::canvas($frame->width_px, $frame->height_px);
 
         foreach ($frame->data as $key => $data) {
-            $filter = $photos[$key]->applied_filter;
+            $filter = $request->filter;
             $source = $photos[$key]->getFirstMediaPath('image', $filter);
             $source = Image::make($source);
             $source->resize($data['width_px'], $data['height_px']);
@@ -80,10 +90,5 @@ class PhotoPaperController extends Controller
             ->toMediaCollection('image');
 
         return Redirect::route('photo-papers.show', $photoPaper);
-    }
-
-    public function destroy(PhotoPaper $photoPaper)
-    {
-        //
     }
 }
