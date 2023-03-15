@@ -83,7 +83,7 @@ class PhotoController extends Controller
 
     public function trigger(Request $request)
     {
-        if (App::isProduction()) abort(403);
+        // if (App::isProduction()) abort(403);
 
         if (!App::hasDebugModeEnabled()) `cd ../storage/app/private && gphoto2 --capture-image-and-download --filename capture_image.jpg`;
 
