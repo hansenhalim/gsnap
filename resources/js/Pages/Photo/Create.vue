@@ -20,7 +20,7 @@
                         </div>
                     </div>
                     <div class="w-1/2">
-                        <div class="grid w-fit grid-flow-col grid-rows-4 gap-4">
+                        <div class="grid w-fit grid-flow-col grid-rows-3 gap-4">
                             <div
                                 v-for="photo in photoPaper.photos"
                                 :key="photo.id"
@@ -28,7 +28,7 @@
                             >
                                 <img
                                     :src="photo.final_url"
-                                    class="h-36 w-52 border"
+                                    class="h-48 w-72 border"
                                 />
                                 <button @click="destroyPhoto(photo)">
                                     <XCircleIcon class="h-14 w-14" />
@@ -41,7 +41,7 @@
                                         photoPaper.photos.length
                                 )"
                                 :key="n"
-                                class="h-36 w-52 bg-gray-700"
+                                class="h-48 w-72 bg-gray-700"
                             />
                         </div>
                     </div>
