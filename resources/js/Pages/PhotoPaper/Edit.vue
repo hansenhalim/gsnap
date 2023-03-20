@@ -5,8 +5,11 @@
         <div
             class="flex min-h-screen w-screen flex-col items-center justify-center text-white"
         >
-            <div class="text-3xl">Silahkan pilih filter yang anda inginkan</div>
+            <div v-show="!preview" class="text-3xl">
+                Silahkan pilih filter yang anda inginkan
+            </div>
             <Splide
+                v-show="!preview"
                 class="mt-4"
                 :options="thumbsOptions"
                 @splide:click="preview = true"
@@ -23,7 +26,7 @@
                 </SplideSlide>
             </Splide>
 
-            <div class="fixed flex w-screen justify-center dark:bg-zinc-900">
+            <div class="fixed flex w-screen justify-center">
                 <div
                     class="flex w-fit flex-col items-center space-y-6"
                     v-show="preview"
@@ -44,10 +47,13 @@
                             />
                         </SplideSlide>
                     </Splide>
-                    <div v-if="isOnProgress" class="text-lg text-red-500">
+                    <div v-show="isOnProgress" class="text-lg text-white">
                         Please wait... Processing
                     </div>
-                    <div v-else class="flex w-full justify-evenly">
+                    <div
+                        v-show="!isOnProgress"
+                        class="flex w-full justify-evenly"
+                    >
                         <div class="h-20 w-20">
                             <button
                                 @click="preview = false"

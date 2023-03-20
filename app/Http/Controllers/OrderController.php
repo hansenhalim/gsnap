@@ -32,10 +32,12 @@ class OrderController extends Controller
 
         $order->order_id = '';
 
-        if (!Config::$isProduction) $order->order_id .= 'SB-';
+        if (! Config::$isProduction) {
+            $order->order_id .= 'SB-';
+        }
 
-        $order->order_id .= 'GSNAP-' . $order->id;
-        $order->order_id .= '-' . rand(10000, 99999);
+        $order->order_id .= 'GSNAP-'.$order->id;
+        $order->order_id .= '-'.rand(10000, 99999);
 
         $order->save();
 
@@ -47,7 +49,7 @@ class OrderController extends Controller
             'enabled_payments' => Config::$isProduction ? ['gopay'] : ['shopeepay'],
             'expiry' => [
                 'unit' => 'hour',
-                'duration' => 1
+                'duration' => 1,
             ],
         ];
 
@@ -66,13 +68,17 @@ class OrderController extends Controller
         // if belum settlement
         if ($order->status !== OrderStatus::SETTLEMENT->value) {
             // dan bukan pending juga
-            if ($order->status !== OrderStatus::PENDING->value) abort(403); // sudah expired
+            if ($order->status !== OrderStatus::PENDING->value) {
+                abort(403);
+            } // sudah expired
 
             // if pending coba update ke midtrans
             $order->update(['status' => Transaction::status($order->order_id)->transaction_status]);
 
             // if setelah update masih belum settlement
-            if ($order->status !== OrderStatus::SETTLEMENT->value) abort(403); // barusan expired
+            if ($order->status !== OrderStatus::SETTLEMENT->value) {
+                abort(403);
+            } // barusan expired
         }
 
         return Redirect::route('photo-papers.create', ['order_id' => $order]);

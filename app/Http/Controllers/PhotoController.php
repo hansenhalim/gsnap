@@ -18,7 +18,7 @@ class PhotoController extends Controller
         $photoPaper->load('frame.media', 'photos');
 
         $baseUrl = null ?? 'http://localhost:8001';
-        $triggerUrl = $baseUrl . '/api/trigger';
+        $triggerUrl = $baseUrl.'/api/trigger';
 
         return Inertia::render('Photo/Create', [
             'photoPaper' => $photoPaper,
@@ -34,6 +34,7 @@ class PhotoController extends Controller
 
         if ($photoPaper->frame->slot_count - $photoPaper->photos()->count() < 1) {
             $data = ['message' => 'Paper Photo is already full.'];
+
             return response()->json($data, Response::HTTP_TOO_MANY_REQUESTS);
         }
 
@@ -78,6 +79,7 @@ class PhotoController extends Controller
     public function destroy(Photo $photo)
     {
         $photo->delete();
+
         return back();
     }
 
@@ -85,18 +87,24 @@ class PhotoController extends Controller
     {
         // if (App::isProduction()) abort(403);
 
-        if (!App::hasDebugModeEnabled()) `cd ../storage/app/private && gphoto2 --capture-image-and-download --filename capture_image.jpg`;
+        if (! App::hasDebugModeEnabled()) {
+            `cd ../storage/app/private && gphoto2 --capture-image-and-download --filename capture_image.jpg`;
+        }
 
         $photo = fopen(storage_path('app/private/capture_image.jpg'), 'r');
 
-        if (!App::hasDebugModeEnabled()) `cd ../storage/app/private && rm capture_image.jpg`;
+        if (! App::hasDebugModeEnabled()) {
+            `cd ../storage/app/private && rm capture_image.jpg`;
+        }
 
         $response = Http::acceptJson()
             ->withToken($request->bearer_token)
             ->attach('image', $photo)
             ->post($request->upload_url, ['photo_paper_id' => $request->photo_paper_id]);
 
-        if ($response->failed()) return response()->json($response->json(), $response->status());
+        if ($response->failed()) {
+            return response()->json($response->json(), $response->status());
+        }
 
         return response()->json(['message' => 'Photo captured and uploaded successfully!'], Response::HTTP_CREATED);
     }

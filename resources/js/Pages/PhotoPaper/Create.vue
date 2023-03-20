@@ -5,8 +5,11 @@
         <div
             class="flex min-h-screen w-screen flex-col items-center justify-center text-white"
         >
-            <div class="text-3xl">Silahkan pilih frame yang anda inginkan</div>
+            <div v-show="!preview" class="text-3xl">
+                Silahkan pilih frame yang anda inginkan
+            </div>
             <Splide
+                v-show="!preview"
                 class="mt-4"
                 :options="thumbsOptions"
                 @splide:click="preview = true"
@@ -20,7 +23,7 @@
                 </SplideSlide>
             </Splide>
 
-            <div class="fixed flex w-screen justify-center dark:bg-zinc-900">
+            <div class="fixed flex w-screen justify-center">
                 <div
                     class="flex w-fit flex-col items-center space-y-6"
                     v-show="preview"
@@ -110,6 +113,8 @@ const thumbsOptions = {
     isNavigation: true,
     arrows: false,
     cover: true,
+    pagination: false,
+    arrows: true,
 };
 
 onMounted(() => {

@@ -39,6 +39,7 @@ class PhotoPaperController extends Controller
     public function show(PhotoPaper $photoPaper)
     {
         $photoPaper->final_url = $photoPaper->getFirstMediaUrl('image');
+
         return Inertia::render('PhotoPaper/Show', ['photoPaper' => $photoPaper]);
     }
 
@@ -52,13 +53,13 @@ class PhotoPaperController extends Controller
             $filteredPhotos->push([
                 'filter' => $filter,
                 'original_url' => $photoPaper->photos()->first()->getFirstMediaUrl('image', $filter),
-                'file_name' => $photoPaper->photos()->first()->getFirstMediaPath('image', $filter)
+                'file_name' => $photoPaper->photos()->first()->getFirstMediaPath('image', $filter),
             ]);
         }
 
         return Inertia::render('PhotoPaper/Edit', [
             'photoPaper' => $photoPaper,
-            'filteredPhotos' => $filteredPhotos
+            'filteredPhotos' => $filteredPhotos,
         ]);
     }
 
@@ -67,7 +68,9 @@ class PhotoPaperController extends Controller
         $photos = $photoPaper->photos;
         $frame = $photoPaper->frame;
 
-        if ($photos->count() !== $frame->slot_count) abort(403);
+        if ($photos->count() !== $frame->slot_count) {
+            abort(403);
+        }
 
         $img = Image::canvas($frame->width_px, $frame->height_px);
 

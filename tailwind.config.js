@@ -11,6 +11,9 @@ module.exports = {
 
     theme: {
         extend: {
+            backgroundImage: {
+                'main-texture': "url('/storage/background.jpg')",
+            },        
             fontFamily: {
                 sans: ['Nunito', ...defaultTheme.fontFamily.sans],
             },

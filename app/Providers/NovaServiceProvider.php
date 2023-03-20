@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\Facades\Gate;
+use Laravel\Nova\Fields\File;
 use Laravel\Nova\Nova;
 use Laravel\Nova\NovaApplicationServiceProvider;
 
@@ -16,6 +17,10 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     public function boot()
     {
         parent::boot();
+
+        \Outl1ne\NovaSettings\NovaSettings::addSettingsFields([
+            File::make('Background')->storeAs(fn () => 'background.jpg'),
+        ]);
 
         Nova::footer(fn () => null);
     }
@@ -68,7 +73,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     public function tools()
     {
-        return [];
+        return [
+            new \Outl1ne\NovaSettings\NovaSettings,
+        ];
     }
 
     /**
