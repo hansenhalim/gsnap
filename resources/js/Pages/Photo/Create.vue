@@ -87,17 +87,16 @@ import { Inertia } from "@inertiajs/inertia";
 import { Link } from "@inertiajs/inertia-vue3";
 import { computed, onMounted, ref } from "vue";
 
-const timerSeconds = 5; //set this to desired delay time
-
 const props = defineProps({
     photoPaper: Object,
     triggerUrl: String,
     bearerToken: String,
     uploadUrl: String,
+    timerSeconds: Number,
 });
 
 const isTimerOn = ref(false);
-const countdown = ref(timerSeconds);
+const countdown = ref(props.timerSeconds);
 
 const captureQuota = computed(
     () => props.photoPaper.frame.slot_count - props.photoPaper.photos.length
@@ -113,7 +112,7 @@ const resetTimer = () => {
     //stop interval
     clearInterval(countdownInterval);
     // reset timer
-    countdown.value = timerSeconds;
+    countdown.value = props.timerSeconds;
     isTimerOn.value = false;
 };
 

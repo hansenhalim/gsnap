@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Fields\File;
+use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Nova;
 use Laravel\Nova\NovaApplicationServiceProvider;
 
@@ -20,6 +21,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
         \Outl1ne\NovaSettings\NovaSettings::addSettingsFields([
             File::make('Background')->storeAs(fn () => 'background.jpg'),
+            Number::make('Timer')->required(),
         ]);
 
         Nova::footer(fn () => null);

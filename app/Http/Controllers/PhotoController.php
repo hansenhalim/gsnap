@@ -25,6 +25,7 @@ class PhotoController extends Controller
             'triggerUrl' => $triggerUrl,
             'bearerToken' => $request->user()->createToken('DSLR')->plainTextToken,
             'uploadUrl' => route('photos.store'),
+            'timerSeconds' => nova_get_setting('timer', 3),
         ]);
     }
 
