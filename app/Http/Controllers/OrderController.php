@@ -27,7 +27,7 @@ class OrderController extends Controller
     public function create()
     {
         $order = new Order;
-        $order->gross_amount = config('midtrans.gross_amount');
+        $order->gross_amount = nova_get_setting('price', 1);
         $order->save();
 
         $order->order_id = '';
