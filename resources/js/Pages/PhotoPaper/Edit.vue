@@ -44,7 +44,10 @@
                             />
                         </SplideSlide>
                     </Splide>
-                    <div class="flex w-full justify-evenly">
+                    <div v-if="isOnProgress" class="text-lg text-red-500">
+                        Please wait... Processing
+                    </div>
+                    <div v-else class="flex w-full justify-evenly">
                         <div class="h-20 w-20">
                             <button
                                 @click="preview = false"
@@ -82,14 +85,22 @@ const props = defineProps({
     filteredPhotos: Object,
 });
 
+const isOnProgress = ref(false);
+
 let selected = 0;
 
 const onSplideMove = (splice, index) => (selected = index);
 
 const submitFilterSelection = () => {
-    Inertia.put(route("photo-papers.update", props.photoPaper), {
-        filter: props.filteredPhotos[selected].filter,
-    });
+    Inertia.put(
+        route("photo-papers.update", props.photoPaper),
+        {
+            filter: props.filteredPhotos[selected].filter,
+        },
+        {
+            onBefore: () => (isOnProgress.value = true),
+        }
+    );
 };
 
 const preview = ref(false);
