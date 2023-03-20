@@ -87,7 +87,7 @@ import { Inertia } from "@inertiajs/inertia";
 import { Link } from "@inertiajs/inertia-vue3";
 import { computed, onMounted, ref } from "vue";
 
-const timerSeconds = 3; //set this to desired delay time
+const timerSeconds = 5; //set this to desired delay time
 
 const props = defineProps({
     photoPaper: Object,
