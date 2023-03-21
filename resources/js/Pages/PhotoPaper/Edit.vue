@@ -41,15 +41,12 @@
                             :key="filteredPhoto.filter"
                         >
                             <img
-                                class="m-auto h-full"
+                                class="w-[60rem]"
                                 :src="filteredPhoto.original_url"
                                 :alt="filteredPhoto.file_name"
                             />
                         </SplideSlide>
                     </Splide>
-                    <div v-show="isOnProgress" class="text-lg text-white">
-                        Please wait... Processing
-                    </div>
                     <div
                         v-show="!isOnProgress"
                         class="flex w-full justify-evenly"
@@ -70,6 +67,9 @@
                                 <CheckIcon class="h-10 w-10" />
                             </button>
                         </div>
+                    </div>
+                    <div v-show="isOnProgress" class="text-lg text-white">
+                        Please wait... Processing
                     </div>
                 </div>
             </div>
@@ -125,8 +125,8 @@ const mainOptions = {
 
 const thumbsOptions = {
     gap: "1.5rem",
-    fixedWidth: 300,
-    fixedHeight: 200,
+    fixedWidth: 450,
+    fixedHeight: 300,
     isNavigation: true,
     arrows: false,
     cover: true,
