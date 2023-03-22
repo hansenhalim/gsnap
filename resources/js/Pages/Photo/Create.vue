@@ -13,7 +13,7 @@
                             autoplay
                         />
                         <div
-                            v-if="isTimerOn"
+                            v-if="isCountdownDisplayed"
                             class="absolute top-0 left-0 flex h-full w-full items-center justify-center bg-black/50"
                         >
                             <div class="text-9xl">{{ countdown }}</div>
@@ -55,7 +55,7 @@
                         ></div>
                         <button
                             :disabled="captureEnabled"
-                            @click="sendCaptureCommand"
+                            @click="startCapturing"
                             class="absolute rounded-full border-4 bg-red-500 p-4 hover:bg-red-300 active:bg-red-300 disabled:bg-gray-500"
                         >
                             <CameraIcon class="h-10 w-10" />
@@ -95,7 +95,7 @@ const props = defineProps({
     timerSeconds: Number,
 });
 
-const isTimerOn = ref(false);
+const isCountdownDisplayed = ref(false);
 const countdown = ref(props.timerSeconds);
 
 const captureQuota = computed(
@@ -103,70 +103,62 @@ const captureQuota = computed(
 );
 
 const captureEnabled = computed(
-    () => isTimerOn.value || captureQuota.value <= 0
+    () => isCountdownDisplayed.value || captureQuota.value <= 0
 );
 
-let countdownInterval = null;
+let countdownInterval;
 
-const resetTimer = () => {
-    //stop interval
-    clearInterval(countdownInterval);
-    // reset timer
-    countdown.value = props.timerSeconds;
-    isTimerOn.value = false;
-};
+const startCapturing = () => {
+    showCountdown();
 
-const sendCaptureCommand = () => {
-    // overlay video with timer
-    isTimerOn.value = true;
-
-    countdownInterval = setInterval(() => {
-        // start reducing countdown
+    let countdownInterval = setInterval(() => {
         countdown.value--;
 
-        // when countdown reaching 0, reset the timer
         if (countdown.value <= 0) {
             resetTimer();
-
-            const options = {
-                method: "POST",
-                headers: {
-                    Accept: "application/json",
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    bearer_token: props.bearerToken,
-                    upload_url: props.uploadUrl,
-                    photo_paper_id: props.photoPaper.id,
-                }),
-            };
-
-            fetch(props.triggerUrl, options)
-                .then(() =>
-                    Inertia.reload({
-                        onSuccess: () => {
-                            //recapture if there still quota left
-                            if (captureQuota.value > 0) sendCaptureCommand();
-                        },
-                    })
-                )
-                .catch((err) => console.error(err));
+            hideCountdown();
+            sendCaptureCommand();
         }
     }, 1000);
 };
 
+function sendCaptureCommand() {
+    const options = {
+        method: "POST",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            bearer_token: props.bearerToken,
+            upload_url: props.uploadUrl,
+            photo_paper_id: props.photoPaper.id,
+        }),
+    };
+
+    fetch(props.triggerUrl, options)
+        .then(() =>
+            Inertia.reload({
+                onSuccess: () => {
+                    if (captureQuota.value > 0) startCapturing();
+                },
+            })
+        )
+        .catch((err) => console.error(err));
+}
+
 const destroyPhoto = (photo) => {
     resetTimer();
+    hideCountdown();
+
     Inertia.delete(route("photos.destroy", photo), {
-        onSuccess: sendCaptureCommand,
+        onSuccess: startCapturing,
     });
 };
 
 onMounted(() => {
-    //Selector for your <video> element
     const video = document.getElementById("webcam");
 
-    //Core
     window.navigator.mediaDevices
         .getUserMedia({ video: true })
         .then((stream) => {
@@ -176,4 +168,17 @@ onMounted(() => {
             };
         });
 });
+
+function resetTimer() {
+    clearInterval(countdownInterval);
+    countdown.value = props.timerSeconds;
+}
+
+function hideCountdown() {
+    isCountdownDisplayed.value = false;
+}
+
+function showCountdown() {
+    isCountdownDisplayed.value = true;
+}
 </script>

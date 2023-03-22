@@ -46,6 +46,6 @@ const props = defineProps({
 
 const sendToPrinter = () => {
     printJS(props.photoPaper.final_url, "image");
-    Inertia.visit(route("orders.create"));
+    Inertia.visit(route("thank-you"));
 };
 </script>
