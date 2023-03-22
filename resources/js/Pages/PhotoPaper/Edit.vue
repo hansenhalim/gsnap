@@ -68,8 +68,8 @@
                             </button>
                         </div>
                     </div>
-                    <div v-show="isOnProgress" class="text-lg text-white">
-                        Please wait... Processing
+                    <div v-show="isOnProgress" class="h-20 text-lg text-white">
+                        Processing... Please wait
                     </div>
                 </div>
             </div>
