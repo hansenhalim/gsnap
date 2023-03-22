@@ -111,7 +111,7 @@ let countdownInterval;
 const startCapturing = () => {
     showCountdown();
 
-    let countdownInterval = setInterval(() => {
+    countdownInterval = setInterval(() => {
         countdown.value--;
 
         if (countdown.value <= 0) {
