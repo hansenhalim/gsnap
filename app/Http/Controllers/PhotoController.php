@@ -88,15 +88,15 @@ class PhotoController extends Controller
     {
         // if (App::isProduction()) abort(403);
 
-        if (! App::hasDebugModeEnabled()) {
+        // if (! App::hasDebugModeEnabled()) {
             `cd ../storage/app/private && gphoto2 --capture-image-and-download --filename capture_image.jpg`;
-        }
+        // }
 
         $photo = fopen(storage_path('app/private/capture_image.jpg'), 'r');
 
-        if (! App::hasDebugModeEnabled()) {
+        // if (! App::hasDebugModeEnabled()) {
             `cd ../storage/app/private && rm capture_image.jpg`;
-        }
+        // }
 
         $response = Http::acceptJson()
             ->withToken($request->bearer_token)
