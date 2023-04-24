@@ -20,16 +20,18 @@ import { Inertia } from "@inertiajs/inertia";
 import { Head } from "@inertiajs/inertia-vue3";
 import { onMounted, ref } from "vue";
 
-const timerSeconds = 3; // set redirect timer here
+const props = defineProps({
+    timerSeconds: Number,
+});
 
-const countdown = ref(timerSeconds);
+const countdown = ref(props.timerSeconds);
 
 onMounted(() => {
     setInterval(() => countdown.value--, 1000);
 
     setTimeout(
-        () => Inertia.visit(route("orders.create")),
-        timerSeconds * 1000
+        () => window.location.replace(route("orders.create")),
+        countdown.value * 1000
     );
 });
 </script>

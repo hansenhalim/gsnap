@@ -30,7 +30,7 @@
                                     :src="photo.final_url"
                                     class="h-48 w-72 border"
                                 />
-                                <button @click="destroyPhoto(photo)">
+                                <button @click="destroyPhoto(photo)" onclick="this.disabled=true">
                                     <XCircleIcon class="h-14 w-14" />
                                 </button>
                             </div>
@@ -50,11 +50,11 @@
                     <div></div>
                     <div class="relative flex items-center justify-center">
                         <div
-                            v-if="!captureEnabled"
+                            v-if="captureEnabled"
                             class="absolute m-2 h-16 w-16 animate-ping rounded-full bg-red-500"
                         ></div>
                         <button
-                            :disabled="captureEnabled"
+                            :disabled="!captureEnabled"
                             @click="startCapturing"
                             class="absolute rounded-full border-4 bg-red-500 p-4 hover:bg-red-300 active:bg-red-300 disabled:bg-gray-500"
                         >
@@ -102,13 +102,13 @@ const captureQuota = computed(
     () => props.photoPaper.frame.slot_count - props.photoPaper.photos.length
 );
 
-const captureEnabled = computed(
-    () => isCountdownDisplayed.value || captureQuota.value <= 0
-);
+const captureEnabled = ref(true);
 
 let countdownInterval;
 
 const startCapturing = () => {
+    captureEnabled.value = false;
+
     showCountdown();
 
     countdownInterval = setInterval(() => {
@@ -152,6 +152,7 @@ const destroyPhoto = (photo) => {
     hideCountdown();
 
     Inertia.delete(route("photos.destroy", photo), {
+        onBefore: () => true,
         onSuccess: startCapturing,
     });
 };

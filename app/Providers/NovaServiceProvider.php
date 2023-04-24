@@ -23,6 +23,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         \Outl1ne\NovaSettings\NovaSettings::addSettingsFields([
             File::make('Background')->storeAs(fn () => 'background.jpg'),
             Number::make('Timer'),
+            Number::make('Redirect Timer'),
             Currency::make('Price')->currency('IDR'),
         ]);
 

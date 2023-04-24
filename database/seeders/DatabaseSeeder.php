@@ -19,63 +19,54 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $data = [
-            [
+            [[
                 'width_px' => 600,
                 'height_px' => 400,
                 'x_offset' => 0,
                 'y_offset' => 22,
-            ], [
+            ]], [[
                 'width_px' => 600,
                 'height_px' => 400,
                 'x_offset' => 0,
                 'y_offset' => 425,
-            ], [
+            ]], [[
                 'width_px' => 600,
                 'height_px' => 400,
                 'x_offset' => 0,
                 'y_offset' => 828,
-            ], [
+            ]], [[
                 'width_px' => 600,
                 'height_px' => 400,
-                'x_offset' => 0,
-                'y_offset' => 1231,
-            ],
+                'x_offset' => 600,
+                'y_offset' => 22,
+            ]], [[
+                'width_px' => 600,
+                'height_px' => 400,
+                'x_offset' => 600,
+                'y_offset' => 425,
+            ]], [[
+                'width_px' => 600,
+                'height_px' => 400,
+                'x_offset' => 600,
+                'y_offset' => 828,
+            ]]
         ];
 
-        $frame1 = Frame::create([
-            'slot_count' => 4,
-            'width_px' => 600,
+        $frame = Frame::create([
+            'slot_count' => 6,
+            'width_px' => 1200,
             'height_px' => 1800,
-            'data' => array_slice($data, 0, 4),
+            'data' => $data,
         ]);
 
-        $frame2 = Frame::create([
-            'slot_count' => 3,
-            'width_px' => 600,
-            'height_px' => 1800,
-            'data' => array_slice($data, 0, 3),
-        ]);
-
-        $frame3 = Frame::create([
-            'slot_count' => 4,
-            'width_px' => 600,
-            'height_px' => 1800,
-            'data' => array_slice($data, 0, 4),
-        ]);
-
-        $frame1
-            ->addMedia(storage_path('app/private/frame_1_600_1800.png'))
+        $frame
+            ->addMedia(storage_path('app/private/frame.png'))
             ->preservingOriginal()
             ->toMediaCollection('image');
 
-        $frame2
-            ->addMedia(storage_path('app/private/frame_2_600_1800.png'))
+        $frame
+            ->addMedia(storage_path('app/private/thumb.jpg'))
             ->preservingOriginal()
-            ->toMediaCollection('image');
-
-        $frame3
-            ->addMedia(storage_path('app/private/frame_3_600_1800.png'))
-            ->preservingOriginal()
-            ->toMediaCollection('image');
+            ->toMediaCollection('thumb');
     }
 }

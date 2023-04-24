@@ -41,7 +41,7 @@
                             />
                         </SplideSlide>
                     </Splide>
-                    <div class="flex w-full justify-evenly">
+                    <div v-show="!isOnProgress" class="flex w-full justify-evenly">
                         <div class="h-20 w-20">
                             <button
                                 @click="preview = false"
@@ -58,6 +58,9 @@
                                 <CheckIcon class="h-10 w-10" />
                             </button>
                         </div>
+                    </div>
+                    <div v-show="isOnProgress" class="h-20 text-lg text-white">
+                        Processing... Please wait
                     </div>
                 </div>
             </div>
@@ -81,12 +84,15 @@ const props = defineProps({
 
 let selected = 0;
 
+const isOnProgress = ref(false);
 const onSplideMove = (splice, index) => (selected = index);
 
 const submitFrameSelection = () => {
     Inertia.post(route("photo-papers.store"), {
         order_id: props.order.id,
         frame_id: props.frames[selected].id,
+    }, {
+        onBefore: () => (isOnProgress.value = true),
     });
 };
 

@@ -7,7 +7,7 @@
         >
             <div class="flex flex-col items-center space-y-12">
                 <img class="h-[40rem]" :src="photoPaper.final_url" />
-                <div class="mt-16 grid h-12 grid-cols-3">
+                <div v-show="!isOnProgress" class="mt-16 grid h-12 grid-cols-3">
                     <button
                         onclick="window.history.back()"
                         class="flex items-center rounded-full border py-2 px-4 text-xl hover:bg-white hover:text-black active:bg-white active:text-black"
@@ -28,6 +28,9 @@
                     </div>
                     <div></div>
                 </div>
+                <div v-show="isOnProgress" class="h-20 text-lg text-white">
+                    Processing... Please wait
+                </div>
             </div>
         </div>
     </FullscreenLayout>
@@ -39,13 +42,18 @@ import { ArrowLeftIcon, PrinterIcon } from "@heroicons/vue/24/outline";
 import { Inertia } from "@inertiajs/inertia";
 import { Head } from "@inertiajs/inertia-vue3";
 import printJS from "print-js";
+import { ref } from "vue";
 
 const props = defineProps({
     photoPaper: Object,
 });
 
+const isOnProgress = ref(false);
+
 const sendToPrinter = () => {
     printJS(props.photoPaper.final_url, "image");
-    Inertia.visit(route("thank-you"));
+    Inertia.visit(route("thank-you"), {
+        onBefore: () => (isOnProgress.value = true),
+    });
 };
 </script>
