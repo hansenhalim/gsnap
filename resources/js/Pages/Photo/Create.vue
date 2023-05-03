@@ -30,7 +30,10 @@
                                     :src="photo.final_url"
                                     class="h-48 w-72 border"
                                 />
-                                <button @click="destroyPhoto(photo)" onclick="this.disabled=true">
+                                <button
+                                    @click="destroyPhoto(photo)"
+                                    onclick="this.disabled=true"
+                                >
                                     <XCircleIcon class="h-14 w-14" />
                                 </button>
                             </div>
@@ -95,6 +98,7 @@ const props = defineProps({
     timerSeconds: Number,
 });
 
+const captureEnabled = ref(true);
 const isCountdownDisplayed = ref(false);
 const countdown = ref(props.timerSeconds);
 
@@ -102,27 +106,21 @@ const captureQuota = computed(
     () => props.photoPaper.frame.slot_count - props.photoPaper.photos.length
 );
 
-const captureEnabled = ref(true);
-
-let countdownInterval;
+var countdownInterval;
 
 const startCapturing = () => {
     captureEnabled.value = false;
-
-    showCountdown();
+    isCountdownDisplayed.value = true;
 
     countdownInterval = setInterval(() => {
         countdown.value--;
-
-        if (countdown.value <= 0) {
-            resetTimer();
-            hideCountdown();
-            sendCaptureCommand();
-        }
+        if (countdown.value <= 0) sendCaptureCommand();
     }, 1000);
 };
 
 function sendCaptureCommand() {
+    resetTimer();
+
     const options = {
         method: "POST",
         headers: {
@@ -149,12 +147,17 @@ function sendCaptureCommand() {
 
 const destroyPhoto = (photo) => {
     resetTimer();
-    hideCountdown();
 
     Inertia.delete(route("photos.destroy", photo), {
         onBefore: () => true,
         onSuccess: startCapturing,
     });
+};
+
+const resetTimer = () => {
+    clearInterval(countdownInterval);
+    countdown.value = props.timerSeconds;
+    isCountdownDisplayed.value = false;
 };
 
 onMounted(() => {
@@ -169,17 +172,4 @@ onMounted(() => {
             };
         });
 });
-
-function resetTimer() {
-    clearInterval(countdownInterval);
-    countdown.value = props.timerSeconds;
-}
-
-function hideCountdown() {
-    isCountdownDisplayed.value = false;
-}
-
-function showCountdown() {
-    isCountdownDisplayed.value = true;
-}
 </script>

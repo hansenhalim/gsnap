@@ -25,7 +25,7 @@ class PhotoController extends Controller
             'triggerUrl' => $triggerUrl,
             'bearerToken' => $request->user()->createToken('DSLR')->plainTextToken,
             'uploadUrl' => route('photos.store'),
-            'timerSeconds' => (int)nova_get_setting('timer', 3),
+            'timerSeconds' => (int) nova_get_setting('timer', 3),
         ]);
     }
 
@@ -89,13 +89,13 @@ class PhotoController extends Controller
         // if (App::isProduction()) abort(403);
 
         // if (! App::hasDebugModeEnabled()) {
-            `cd ../storage/app/private && gphoto2 --capture-image-and-download --filename capture_image.jpg`;
+        `cd ../storage/app/private && gphoto2 --capture-image-and-download --filename capture_image.jpg`;
         // }
 
         $photo = fopen(storage_path('app/private/capture_image.jpg'), 'r');
 
         // if (! App::hasDebugModeEnabled()) {
-            `cd ../storage/app/private && rm capture_image.jpg`;
+        `cd ../storage/app/private && rm capture_image.jpg`;
         // }
 
         $response = Http::acceptJson()

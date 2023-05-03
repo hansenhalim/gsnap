@@ -49,7 +49,7 @@ class DatabaseSeeder extends Seeder
                 'height_px' => 400,
                 'x_offset' => 600,
                 'y_offset' => 828,
-            ]]
+            ]],
         ];
 
         $frame = Frame::create([
