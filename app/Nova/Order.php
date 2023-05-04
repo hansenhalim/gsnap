@@ -5,6 +5,7 @@ namespace App\Nova;
 use App\Enums\OrderStatus;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Currency;
+use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
@@ -50,6 +51,10 @@ class Order extends Resource
                 ->options(array_column(OrderStatus::cases(), 'name', 'value'))
                 ->filterable(),
             Currency::make('Gross Amount')->currency('IDR'),
+            DateTime::make('Created At')
+                ->exceptOnForms(),
+            DateTime::make('Updated At')
+                ->exceptOnForms(),
         ];
     }
 

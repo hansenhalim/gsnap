@@ -4,6 +4,7 @@ namespace App\Nova;
 
 use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -44,6 +45,10 @@ class PhotoPaper extends Resource
             ID::make()->sortable(),
             Images::make('image/jpeg', 'image')
                 ->rules('required'),
+            DateTime::make('Created At')
+                ->exceptOnForms(),
+            DateTime::make('Updated At')
+                ->exceptOnForms(),
         ];
     }
 

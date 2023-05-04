@@ -20,6 +20,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     {
         parent::boot();
 
+        Nova::userTimezone(fn () => 'Asia/Jakarta');
+
         \Outl1ne\NovaSettings\NovaSettings::addSettingsFields([
             File::make('Background')->storeAs(fn () => 'background.jpg'),
             Number::make('Timer'),
