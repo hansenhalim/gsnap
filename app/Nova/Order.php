@@ -25,7 +25,7 @@ class Order extends Resource
      *
      * @var string
      */
-    public static $title = 'id';
+    public static $title = 'order_id';
 
     /**
      * The columns that should be searched.
@@ -33,7 +33,7 @@ class Order extends Resource
      * @var array
      */
     public static $search = [
-        'id',
+        'order_id',
     ];
 
     /**
@@ -52,6 +52,7 @@ class Order extends Resource
                 ->filterable(),
             Currency::make('Gross Amount')->currency('IDR'),
             DateTime::make('Created At')
+                ->filterable()
                 ->exceptOnForms(),
             DateTime::make('Updated At')
                 ->exceptOnForms(),
