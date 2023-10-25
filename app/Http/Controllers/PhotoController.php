@@ -17,7 +17,7 @@ class PhotoController extends Controller
         $photoPaper = PhotoPaper::findOrFail($request->photo_paper_id);
         $photoPaper->load('frame.media', 'photos');
 
-        $baseUrl = null ?? 'http://localhost:8001';
+        $baseUrl = config('app.dslr_url');
         $triggerUrl = $baseUrl.'/api/trigger';
 
         return Inertia::render('Photo/Create', [
